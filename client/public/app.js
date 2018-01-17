@@ -149,36 +149,17 @@ const states = {
           `
           if (userInfo.presi) {
             html+= `<button class="borrar-orden" data-index="${index}">Borrar</button>`
-            html+= `<button class="editar-orden" data-index="${index}">Editar</button>`
           }
         }
       })
       ordenesDiv.innerHTML = html
-      if (userInfo.presi) {
-        document.querySelectorAll('.borrar-orden').forEach(val => {
-          val.onclick = () => {
-            listaOrdenes.splice(parseInt(val.dataset.index), 1)
-            updateOrdenes()
-            socket.emit('ordenes', listaOrdenes)
-          }
-        })
-        document.querySelectorAll('.editar-orden').forEach(val => {
-          val.onclick = () => {
-            const orden = listaOrdenes[parseInt(val.dataset.index)]
-            const newTarget = presi.querySelector('#newTarget')
-            var k = 0
-            newTarget.querySelectorAll('input')[k++].value = orden.nombre
-            newTarget.querySelectorAll('input')[k++].value = orden.link
-            newTarget.querySelectorAll('input')[k++].value = orden.seguridad
-            newTarget.querySelectorAll('input')[k++].value = orden.guardias
-            newTarget.querySelectorAll('input')[k++].value = orden.sabots
-            newTarget.querySelectorAll('input')[k++].value = orden.notas
-            listaOrdenes.splice(parseInt(val.dataset.index), 1)
-            updateOrdenes()
-            socket.emit('ordenes', listaOrdenes)
-          }
-        })
-      }
+      document.querySelectorAll('.borrar-orden').forEach(val => {
+        val.onclick = () => {
+          listaOrdenes.splice(parseInt(val.dataset.index), 1)
+          updateOrdenes()
+          socket.emit('ordenes', listaOrdenes)
+        }
+      })
     }
   }
 }
