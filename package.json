@@ -18,6 +18,8 @@
   "homepage": "https://github.com/NiciusB/MMCoordinacion#readme",
   "dependencies": {
     "express": "^4.16.2",
-    "ws": "^4.0.0"
+    "node-sass": "^4.7.2",
+    "node-sass-middleware": "^0.11.0",
+    "socket.io": "^2.0.4"
   }
 }
