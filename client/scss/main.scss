@@ -32,6 +32,18 @@ html, body {
     padding: 0.35em 0.75em;
     width: 20em;
   }
+  button {
+    padding: 1em 1em;
+    font-size: 0.5em;
+    line-height: 0;
+  }
+  .credits {
+    margin-top: 3em;
+    font-size: 0.25em;
+    a {
+      color: #777;
+    }
+  }
 }
 
 #chat, #panel, #messages {

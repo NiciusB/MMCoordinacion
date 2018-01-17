@@ -41,10 +41,13 @@ module.exports = server => {
                 socket.emit('chat', ['System', userInfo.presi ? 'Bienvenido presi' : 'Chao presi'])
                 break
               case 'help': case '?':
-                socket.emit('chat', ['System', 'Lista de comandos: /presi, /help, /?'])
+                socket.emit('chat', ['System', 'Lista de comandos: /presi, /leave, /help, /?'])
+                break
+              case 'leave':
+                socket.disconnect()
                 break
               default:
-                socket.emit('chat', ['System', 'Comando no reconocido'])
+                socket.emit('chat', ['System', 'Comando no reconocido. Usa /help para ver la lista de comandos'])
                 break
             }
           } else {

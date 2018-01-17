@@ -6,6 +6,7 @@ const loggedInState = (socket, userInfo) => {
     }
     window.onfocus = () => {
         updateTitle()
+        document.querySelector('#caja').focus()
     }
     var listaOrdenes = []
     var listaMiembros = []
@@ -23,6 +24,7 @@ const loggedInState = (socket, userInfo) => {
     const panel = document.querySelector('#panel')
     const presi = panel.querySelector('#presi')
     const ordenesDiv = panel.querySelector('#ordenesDiv')
+    caja.focus()
     caja.onkeypress = e => {
         if (e.keyCode !== 13) return true
         socket.emit('chat', caja.value)
@@ -44,7 +46,7 @@ const loggedInState = (socket, userInfo) => {
     })
     socket.on('miembros', miembros => {
         listaMiembros = miembros
-        updatePresi()
+        if (userInfo.presi) updatePresi()
     })
     socket.on('presi', valor => {
         userInfo.presi = valor
@@ -55,18 +57,17 @@ const loggedInState = (socket, userInfo) => {
             presi.style.display = 'block'
             const miembrosOptions = !listaMiembros.length ? '' : listaMiembros.map(a => `<option value="${parseHTML(a)}">${parseHTML(a)}</option>`).reduce((a, b) => a + b)
             presi.innerHTML = `
-        <form id="newTarget">
-        <label>Nombre <input type="text"/></label>
-        <label>Link perfil <input type="url"/></label>
-        <label>Nivel de seguridad <input type="number"/></label>
-        <label>Número de guardias <input type="number"/></label>
-        <label>Sabots a enviar <input type="number"/></label>
-        <div>Miembros asignados <select multiple>${miembrosOptions}</select></div>
-        <label>Notas <input type="text"/></label>
-        <button>Añadir objetivo</button>
-        </form>
-        <hr/>
-      `
+                <form id="newTarget">
+                <label>Nombre <input type="text"/></label>
+                <label>Link perfil <input type="url"/></label>
+                <label>Nivel de seguridad <input type="number"/></label>
+                <label>Número de guardias <input type="number"/></label>
+                <label>Sabots a enviar <input type="number"/></label>
+                <div>Miembros asignados <select multiple>${miembrosOptions}</select></div>
+                <label>Notas <input type="text"/></label>
+                <button>Añadir objetivo</button>
+                </form>
+            `
             const newTarget = presi.querySelector('#newTarget')
             newTarget.querySelector('select').onmousedown = e => {
                 e.preventDefault()
@@ -100,13 +101,13 @@ const loggedInState = (socket, userInfo) => {
         else listaOrdenes.forEach((val, index) => {
             if (userInfo.presi || val.miembros.indexOf(userInfo.username) != -1) {
                 html += `
-        <h1><a href="${val.link}" target="_blank">${parseHTML(val.nombre)}</a></h1>
-        <p>Nivel de seguridad: ${val.seguridad}</p>
-        <p>Número de guardias: ${val.guardias}</p>
-        <p>Sabots a enviar: ${val.sabots}</p>
-        <p>Miembros asignados: ${parseHTML(val.miembros)}</p>
-        <p>Notas: ${parseHTML(val.notas)}</p>
-        `
+                <h1><a href="${val.link}" target="_blank">${parseHTML(val.nombre)}</a></h1>
+                <p>Nivel de seguridad: ${val.seguridad}</p>
+                <p>Número de guardias: ${val.guardias}</p>
+                <p>Sabots a enviar: ${val.sabots}</p>
+                <p>Miembros asignados: ${parseHTML(val.miembros)}</p>
+                <p>Notas: ${parseHTML(val.notas)}</p>
+                `
                 if (userInfo.presi) {
                     html += `<button class="borrar-orden" data-index="${index}">Borrar</button>`
                     html += `<button class="editar-orden" data-index="${index}">Editar</button>`

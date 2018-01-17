@@ -12,6 +12,7 @@ const states = {
             <input type="text"/>
           </label>
           <button>Entrar</button>
+          <div class="credits"><a href="https://github.com/NiciusB/MMCoordinacion">https://github.com/NiciusB/MMCoordinacion</a></div>
         </form>`
     const loginForm = document.querySelector('#loginForm')
     const loginIdSala = loginForm.querySelector('input[type=number]')
@@ -39,7 +40,7 @@ const states = {
     app.innerHTML = `
         <div id="wpInfo" class="fullscreen">
           <p></p>
-          <button>Retry</button>
+          <button>Ok</button>
         </div>`
     const wpInfo = document.querySelector('#wpInfo')
     wpInfo.querySelector('p').textContent = message
