@@ -64,5 +64,9 @@ html, body {
 
 
 #panel {
+  padding: 0.5em;
   background: #e1e1e1;
+  #newTarget select {
+    height: 10em;
+  }
 }

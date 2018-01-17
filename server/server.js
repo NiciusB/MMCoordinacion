@@ -20,8 +20,10 @@ const salas = {}
 class Sala {
   constructor(id) {
     this.id = id
+    this.miembrosSaved = []
     this.ordenesSaved = []
     this.chatHist = []
+    this.chat(['System', 'Creada sala ' + this.id])
   }
   chat(msg) {
     this.chatHist.push(msg)
@@ -41,6 +43,12 @@ class Sala {
     this.chatHist.forEach(element => {
       socket.emit('chat', element)
     })
+    this.miembrosSaved.push(socket.userInfo.username)
+    this.emit('miembros', this.miembrosSaved)
+  }
+  leaved(socket) {
+    this.miembrosSaved.splice(this.miembrosSaved.indexOf(socket.userInfo.username), 1)
+    this.emit('miembros', this.miembrosSaved)
   }
 }
 
@@ -60,6 +68,9 @@ io.on('connection', socket => {
       const sala = salas[userInfo.sala]
       sala.joined(socket)
 
+      socket.on('disconnect', () => {
+        sala.leaved(socket)
+      })
       socket.on('ordenes', ordenes => {
         sala.ordenes(ordenes)
       })
