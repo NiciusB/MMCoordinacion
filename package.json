@@ -1,0 +1,23 @@
+{
+  "name": "mmcoordinacion",
+  "version": "1.0.0",
+  "description": "MMCoordinacion",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NiciusB/MMCoordinacion.git"
+  },
+  "author": "NiciusB",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NiciusB/MMCoordinacion/issues"
+  },
+  "homepage": "https://github.com/NiciusB/MMCoordinacion#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "ws": "^4.0.0"
+  }
+}
