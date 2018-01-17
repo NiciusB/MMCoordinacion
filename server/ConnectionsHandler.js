@@ -1,17 +1,17 @@
-const Sala = require('./Sala.js')
 const socket = require('socket.io')
 
-module.exports = server => {
+module.exports = (server, salas) => {
   const io = socket(server)
-  const salas = {}
+  const Sala = require('./Sala.js')(io)
   io.on('connection', socket => {
     socket.on('henloLizard', userInfo => {
       socket.userInfo = userInfo
       io.in(userInfo.sala).clients((error, clients) => {
         if (error) return
         try {
-          if (clients.length === 0) salas[userInfo.sala] = new Sala(io, userInfo.sala)
-          else if (clients.some(client => io.sockets.sockets[client].userInfo.username == userInfo.username)) {
+          //if (clients.length === 0) salas[userInfo.sala] = new Sala(userInfo.sala)
+          if (!salas[userInfo.sala]) salas[userInfo.sala] = new Sala(userInfo.sala)
+          if (clients.length && clients.some(client => io.sockets.sockets[client].userInfo.username == userInfo.username)) {
             socket.disconnect()
           }
           if (userInfo.username == 'System') socket.disconnect()
