@@ -13,6 +13,9 @@ const loggedInState = (socket, userInfo) => {
     const panel = document.querySelector('#panel')
     const presi = panel.querySelector('#presi')
     const ordenesDiv = panel.querySelector('#ordenesDiv')
+    messages.mouseClickedSelf = false
+    messages.onmousedown = e => {messages.mouseClickedSelf = e.target === messages}
+    messages.onmouseup = e => {if(messages.mouseClickedSelf) caja.focus()}
     caja.focus()
     caja.onkeypress = e => {
         if (e.keyCode !== 13) return true
