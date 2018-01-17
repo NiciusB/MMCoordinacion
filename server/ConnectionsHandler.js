@@ -23,6 +23,7 @@ module.exports = server => {
         
         const sala = salas[userInfo.sala]
         sala.joined(socket)
+        socket.emit('chat', ['System', 'Usa /help para ver la lista de comandos disponibles'])
   
         socket.on('disconnect', () => {
           sala.leaved(socket)
@@ -41,7 +42,14 @@ module.exports = server => {
                 socket.emit('chat', ['System', userInfo.presi ? 'Bienvenido presi' : 'Chao presi'])
                 break
               case 'help': case '?':
-                socket.emit('chat', ['System', 'Lista de comandos: /presi, /leave, /help, /?'])
+                socket.emit('chat', ['System', 'Lista de comandos: /presi, /timer, /leave, /help, /?'])
+                break
+              case 'timer':
+                for(let t = 0; t<=10; t++) {
+                  setTimeout(() => {
+                    sala.chat(['System', 10-t])
+                  }, t * 1000)
+                }
                 break
               case 'leave':
                 socket.disconnect()
