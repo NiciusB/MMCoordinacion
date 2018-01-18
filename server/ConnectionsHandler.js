@@ -45,10 +45,10 @@ module.exports = server => {
                 socket.emit('chat', ['System', 'Lista de comandos: /presi, /timer, /leave, /help, /?'])
                 break
               case 'timer':
-                for(let t = 0; t<=10; t++) {
+                for(let t = 10; t >= 0; t--) {
                   setTimeout(() => {
-                    sala.chat(['System', 10-t])
-                  }, t * 1000)
+                    sala.chat(['System', t > 3 ? t : `${t}<script>beep()</script>`])
+                  }, (10 - t) * 1000)
                 }
                 break
               case 'leave':
