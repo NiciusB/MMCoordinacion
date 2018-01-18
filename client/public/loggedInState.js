@@ -1,20 +1,24 @@
 const loggedInState = (socket, userInfo) => {
     app.innerHTML = `
-    <div id="chat">
-      <div id="messages"></div>
-      <input id="caja" />
+    <div id="panel1">
+        <div id="chat">
+            <div id="messagesContainer">
+                <div id="messages"></div>
+            </div>
+            <input id="caja" />
+        </div>
+        <iframe id="mmiframe" src="https://www.megamagnate.net/ranking/earnings"></iframe>
     </div>
-    <div id="panel">
-      <div id="presi"></div>
-      <div id="ordenesDiv"></div>
-      <iframe src="https://www.megamagnate.net/ranking/earnings"></iframe>
+    <div id="panel2">
+        <div id="ordenesContainer">
+            <div id="presi"></div>
+            <div id="ordenesDiv"></div>
+        </div>
     </div>`
     const caja = document.querySelector('#caja')
     const messages = document.querySelector('#messages')
-    const panel = document.querySelector('#panel')
-    const presi = panel.querySelector('#presi')
-    const ordenesDiv = panel.querySelector('#ordenesDiv')
-
+    const presi = document.querySelector('#presi')
+    const ordenesDiv = document.querySelector('#ordenesDiv')
 
     messages.mouseClickedSelf = false
     messages.onmousedown = e => {messages.mouseClickedSelf = e.target === messages}
