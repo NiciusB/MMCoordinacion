@@ -7,6 +7,7 @@ const loggedInState = (socket, userInfo) => {
     <div id="panel">
       <div id="presi"></div>
       <div id="ordenesDiv"></div>
+      <iframe src="https://www.megamagnate.net/ranking/earnings"></iframe>
     </div>`
     const caja = document.querySelector('#caja')
     const messages = document.querySelector('#messages')
@@ -23,7 +24,6 @@ const loggedInState = (socket, userInfo) => {
         caja.value = ''
         return false
     }
-    socket.emit('henloLizard', userInfo)
     socket.on('chat', chat => {
         const msg = parseHTML(chat[1])
         const userName = parseHTML(chat[0])
@@ -106,8 +106,7 @@ const loggedInState = (socket, userInfo) => {
     })
     const updateOrdenes = () => {
         var html = ''
-        if (!listaOrdenes.length) html = '<h1>Aún no hay órdenes</h1>'
-        else listaOrdenes.filter(val => userInfo.presi || val.miembros.indexOf(userInfo.username) != -1).forEach((val, index) => {
+        if (listaOrdenes.length) listaOrdenes.filter(val => userInfo.presi || val.miembros.indexOf(userInfo.username) != -1).forEach((val, index) => {
             html += `
             <h1><a href="${val.link}" target="_blank">${parseHTML(val.nombre)}</a></h1>
             <p>Nivel de seguridad: ${val.seguridad}</p>
@@ -121,6 +120,7 @@ const loggedInState = (socket, userInfo) => {
                 html += `<button class="editar-orden" data-index="${index}">Editar</button>`
             }
         })
+        if (html === '') html = '<h1>Aún no hay órdenes</h1>'
         ordenesDiv.innerHTML = html
         if (userInfo.presi) {
             document.querySelectorAll('.borrar-orden').forEach(val => {
@@ -148,6 +148,8 @@ const loggedInState = (socket, userInfo) => {
             })
         }
     }
+
+    socket.emit('henloLizard', userInfo)
 }
 
 

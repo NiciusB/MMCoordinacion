@@ -81,4 +81,9 @@ html, body {
   #newTarget select {
     height: 10em;
   }
+  iframe {
+    border: 0;
+    width: 100%;
+    height: 70vh;
+  }
 }
