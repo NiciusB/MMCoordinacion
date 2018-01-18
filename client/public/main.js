@@ -26,7 +26,7 @@ const states = {
         username: loginUsername.value,
         presi: false
       }
-      var socket = io(location.hostname === 'localhost' ? 'ws://localhost:3666' : 'ws://nuno.bigmoney.biz:3666')
+      var socket = io(`ws://${location.hostname}:3666`)
       socket.on('connect', () => this.loggedInState(socket, userInfo))
       socket.on('connect_timeout', () => this.wsInfo(socket, 'WebSocket connect_timeout'))
       socket.on('connect_error', () => this.wsInfo(socket, 'WebSocket connect_error'))
