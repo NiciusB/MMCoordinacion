@@ -23,8 +23,7 @@ const states = {
       event.preventDefault()
       const userInfo = {
         sala: loginIdSala.value,
-        username: loginUsername.value,
-        presi: false
+        username: loginUsername.value
       }
       var socket = io(`ws://${location.hostname}:3666`)
       socket.on('connect', () => this.loggedInState(socket, userInfo))

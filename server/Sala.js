@@ -3,7 +3,7 @@ class Sala {
     this.io = io
     this.id = id
     this.miembrosSaved = []
-    this.ordenesSaved = []
+    this.ordenesSaved = ""
     this.chatHist = []
     this.chat(['System', 'Creada sala ' + this.id])
   }

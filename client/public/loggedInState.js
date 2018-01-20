@@ -1,18 +1,17 @@
 const loggedInState = (socket, userInfo) => {
     app.innerHTML = `
-    <div id="panel1">
-        <div id="chat">
-            <div id="messagesContainer">
-                <div id="messages"></div>
+    <div id="loggedIn">
+        <div id="panel1">
+            <div id="chat">
+                <div id="messagesContainer">
+                    <div id="messages"></div>
+                </div>
+                <input id="caja" />
             </div>
-            <input id="caja" />
-        </div>
-        <iframe id="mmiframe" src="https://www.megamagnate.net/ranking/earnings"></iframe>
-    </div>
-    <div id="panel2">
-        <div id="ordenesContainer">
-            <div id="presi"></div>
             <div id="ordenesDiv"></div>
+        </div>
+        <div id="panel2">
+            <iframe id="mmiframe" src="https://www.megamagnate.net/ranking/earnings"></iframe>
         </div>
     </div>`
     const caja = document.querySelector('#caja')
@@ -61,110 +60,10 @@ const loggedInState = (socket, userInfo) => {
     var listaMiembros = []
     socket.on('miembros', miembros => {
         listaMiembros = miembros
-        if (userInfo.presi) updatePresi()
     })
-    socket.on('presi', valor => {
-        userInfo.presi = valor
-        updatePresi()
-    })
-    const updatePresi = () => {
-        if (userInfo.presi) {
-            presi.style.display = 'block'
-            const miembrosOptions = !listaMiembros.length ? '' : listaMiembros.map(a => `<option value="${parseHTML(a)}">${parseHTML(a)}</option>`).reduce((a, b) => a + b)
-            presi.innerHTML = `
-                <form id="newTarget">
-                <label>Nombre <input type="text"/></label>
-                <label>Link perfil <input type="url"/></label>
-                <label>Nivel de seguridad <input type="number"/></label>
-                <label>Número de guardias <input type="number"/></label>
-                <label>Sabots a enviar <input type="number"/></label>
-                <div>Miembros asignados <select multiple>${miembrosOptions}</select></div>
-                <label>Notas <input type="text"/></label>
-                <button>Añadir objetivo</button>
-                </form>
-            `
-            const newTarget = presi.querySelector('#newTarget')
-            newTarget.querySelector('select').onmousedown = e => {
-                e.preventDefault()
-                e.target.selected = !e.target.selected
-                newTarget.querySelector('select').focus()
-                return false
-            }
-            newTarget.onsubmit = event => {
-                event.preventDefault()
-                let k = 0
-                listaOrdenes.push({
-                    nombre: newTarget.querySelectorAll('input')[k++].value,
-                    link: newTarget.querySelectorAll('input')[k++].value,
-                    seguridad: newTarget.querySelectorAll('input')[k++].value,
-                    guardias: newTarget.querySelectorAll('input')[k++].value,
-                    sabots: newTarget.querySelectorAll('input')[k++].value,
-                    notas: newTarget.querySelectorAll('input')[k++].value,
-                    miembros: Array.from(newTarget.querySelector('select').selectedOptions).map(v => v.value)
-                })
-                updateOrdenes()
-                newTarget.reset()
-                socket.emit('ordenes', listaOrdenes)
-                return false
-            }
-        } else presi.style.display = 'none'
-        updateOrdenes()
-    }
-    var listaOrdenes = []
-    var lastNOrdenes = 0
     socket.on('ordenes', ordenes => {
-        listaOrdenes = ordenes
-        updateOrdenes()
-        if (!userInfo.presi) {
-            var misOrdenes = listaOrdenes.filter(val => val.miembros.indexOf(userInfo.username) != -1).length
-            if (misOrdenes > lastNOrdenes) beep()
-            lastNOrdenes = misOrdenes
-        }
+        ordenesDiv.innerHTML = ordenes
     })
-    const updateOrdenes = () => {
-        var html = ''
-        if (listaOrdenes.length) listaOrdenes.filter(val => userInfo.presi || val.miembros.indexOf(userInfo.username) != -1).forEach((val, index) => {
-            html += `
-            <h1><a href="${val.link}" target="_blank">${parseHTML(val.nombre)}</a></h1>
-            <p>Nivel de seguridad: ${val.seguridad}</p>
-            <p>Número de guardias: ${val.guardias}</p>
-            <p>Sabots a enviar: ${val.sabots}</p>
-            <p>Miembros asignados: ${parseHTML(val.miembros)}</p>
-            <p>Notas: ${parseHTML(val.notas)}</p>
-            `
-            if (userInfo.presi) {
-                html += `<button class="borrar-orden" data-index="${index}">Borrar</button>`
-                html += `<button class="editar-orden" data-index="${index}">Editar</button>`
-            }
-        })
-        if (html === '') html = '<h1>Aún no hay órdenes</h1>'
-        ordenesDiv.innerHTML = html
-        if (userInfo.presi) {
-            document.querySelectorAll('.borrar-orden').forEach(val => {
-                val.onclick = () => {
-                    listaOrdenes.splice(parseInt(val.dataset.index), 1)
-                    updateOrdenes()
-                    socket.emit('ordenes', listaOrdenes)
-                }
-            })
-            document.querySelectorAll('.editar-orden').forEach(val => {
-                val.onclick = () => {
-                    const orden = listaOrdenes[parseInt(val.dataset.index)]
-                    const newTarget = presi.querySelector('#newTarget')
-                    var k = 0
-                    newTarget.querySelectorAll('input')[k++].value = orden.nombre
-                    newTarget.querySelectorAll('input')[k++].value = orden.link
-                    newTarget.querySelectorAll('input')[k++].value = orden.seguridad
-                    newTarget.querySelectorAll('input')[k++].value = orden.guardias
-                    newTarget.querySelectorAll('input')[k++].value = orden.sabots
-                    newTarget.querySelectorAll('input')[k++].value = orden.notas
-                    listaOrdenes.splice(parseInt(val.dataset.index), 1)
-                    updateOrdenes()
-                    socket.emit('ordenes', listaOrdenes)
-                }
-            })
-        }
-    }
 
     socket.emit('henloLizard', userInfo)
 }

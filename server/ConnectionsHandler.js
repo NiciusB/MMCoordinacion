@@ -28,21 +28,17 @@ module.exports = server => {
         socket.on('disconnect', () => {
           sala.leaved(socket)
         })
-        socket.on('ordenes', ordenes => {
-          sala.ordenes(ordenes)
-        })
         socket.on('chat', msg => {
           if (msg[0] === '/') {
-            const command = msg.split('/')
-            command.splice(0, 1)
+            const command = msg.split(' ')
+            command[0] = command[0].replace('/', '')
             switch (command[0]) {
-              case 'presi':
-                userInfo.presi = !userInfo.presi
-                socket.emit('presi', userInfo.presi)
-                socket.emit('chat', ['System', userInfo.presi ? 'Bienvenido presi' : 'Chao presi'])
+              case 'ordenes':
+                command.splice(0, 1)
+                sala.ordenes(command.join(' '))
                 break
               case 'help': case '?':
-                socket.emit('chat', ['System', 'Lista de comandos: /presi, /timer, /leave, /help, /?'])
+                socket.emit('chat', ['System', 'Lista de comandos: /ordenes, /timer, /leave, /help, /?'])
                 break
               case 'timer':
                 for(let t = 10; t >= 0; t--) {

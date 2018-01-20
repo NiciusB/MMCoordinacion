@@ -46,17 +46,21 @@ html, body {
     }
   }
 }
-
+#loggedIn {
+  display: flex;
+}
 #panel1, #panel2 {
-  width: 40vw;
-  float: right;
-  &#panel1 {
-    width: 60vw;
-    float: left;
-  }
   height: 100vh;
   position: relative;
 }
+#panel2 {
+  max-width: 60vw;
+  width: 1070px;
+}
+#panel1 {
+  flex-grow: 1;
+}
+
 
 #chat {
   height: 40vh;
@@ -85,19 +89,17 @@ html, body {
   }
 }
 
+#ordenesDiv {
+  height: 60vh;
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+}
+
 #mmiframe {
   border: 0;
   width: 100%;
-  height: 60vh;
-}
-
-#ordenesContainer {
-  background: #e1e1e1;
-  padding: 0.5em;
-  width: 100%;
-  height: 100vh;
-  overflow: auto;
-  #newTarget select {
-    height: 10em;
-  }
+  height: 100%;
 }
